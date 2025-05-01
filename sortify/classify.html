@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classify Waste - Sortify AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="js/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <img src="./assests/sor.png" alt="Sortify AI Logo">
+                </a>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="learn.html">Learn</a></li>
+                <li><a href="classify.html" class="active">Classify</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="classify-page">
+        <section class="upload-section">
+            <h2>Upload your waste image</h2>
+            <p>Our AI will analyze your image and tell you which bin to use for proper recycling.</p>
+            
+            <div class="upload-container">
+                <div class="upload-box" id="dropArea">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <p>Drag and drop or click to browse</p>
+                    <input type="file" id="fileInput" accept="image/*">
+                    <button class="upload-btn">Upload Image</button>
+                    <button class="cancel-btn" id="cancelBtn" style="display: none; margin-top: 10px; background-color: #ff4444;">Cancel</button>
+                </div>
+                <div id="previewContainerr" style="margin-top: 20px; text-align: center;"></div>
+            </div>
+            
+            <div class="waiting-section" id="waitingSection">
+                <h3>Analyzing image...</h3>
+                <div class="waste-categories">
+                    <div class="category">
+                        <img src="./assests/icon1.png" alt="Plastic">
+                        <span>Plastic</span>
+                    </div>
+                    <div class="category">
+                        <img src="./assests/icon2.png" alt="Glass">
+                        <span>Glass</span>
+                    </div>
+                    <div class="category">
+                        <img src="./assests/icon3.png" alt="Metal">
+                        <span>Metal</span>
+                    </div>
+                    <div class="category">
+                        <img src="./assests/icon4.png" alt="Cardboard">
+                        <span>Cardboard</span>
+                    </div>
+                    <div class="category">
+                        <img src="./assests/icon5.png" alt="Paper">
+                        <span>Paper</span>
+                    </div>
+                    <div class="category">
+                        <img src="./assests/icon6.png" alt="Trash">
+                        <span>Trash</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-section" id="resultsSection">
+            <h1>Classification Result</h1>
+            
+            <div class="result-categories" id="resultCategories">
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="detailed-result">
+                <h3>Detected Type</h3>
+                <h2 id="detectedType">-</h2>
+                
+                <div class="confidence-meter">
+                    <span>Confidence</span>
+                    <div class="meter">
+                        <div class="progress" id="confidenceBar" style="width: 0%"></div>
+                    </div>
+                    <span class="percentage" id="confidencePercentage">0%</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="disposal-instructions">
+                <h2>Disposal Instructions</h2>
+                <p id="disposalInfo">-</p>
+                
+                <h3>Tips:</h3>
+                <ul class="tips-list" id="disposalTips">
+                </ul>
+            </div>
+        </section>
+
+        <section class="how-it-works">
+            <h2 style="color: white;">How It Works</h2>
+            <p>Our AI model has been trained on thousands of waste images to accurately classify items into the correct recycling categories.</p><br><br>
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Upload Image</h3>
+                    <p>Take a clear photo of your waste item and upload it to our system.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>AI Analysis</h3>
+                    <p>Our machine learning model analyzes the image to identify the material type.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Get Results</h3>
+                    <p>Receive accurate classification results and proper disposal instructions.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="did-you-know">
+            <div class="did-you-know-card">
+                <h2>
+                    <i class="fas fa-lightbulb bulb-icon" style="margin-right: 10px;"></i>
+                    Did you know?</h2>
+                <p>Plastic bags and other plastic garbage thrown into the ocean kill as many as 1 million sea creatures every year.</p>
+                <p class="source">Source: UNESCO</p>
+            </div>
+        </section>
+
+        <section class="final-cta-container">
+            <div class="final-cta-card">
+                <h2 style="color: white;">Want to learn more about waste sorting?</h2>
+                <p>Check out our comprehensive guide to waste categories and recycling best practices.</p>
+                <a href="learn.html" class="cta-button">View Sorting Guide <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="./assests/sor.png" alt="Sortify AI Logo" class="footer-logo">
+                <p>Sortify AI helps you sort waste correctly using artificial intelligence. Our mission is to reduce landfill waste and increase recycling efficiency.</p>
+            </div>
+            
+            <div class="footer-links-group">
+                <div class="footer-links">
+                    <h3 style="color: white;">Navigation</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="learn.html">Learn</a></li>
+                        <li><a href="classify.html">Classify</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 style="color: white;">Legal</h3>
+                    <ul>
+                        <li><a href="">Privacy Policy</a></li>
+                        <li><a href="">Terms of Service</a></li>
+                        <li><a href="">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sortify AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const wasteCategories = [
+            { 
+                id: 0,
+                name: "Plastic", 
+                icon: "./assests/icon1.png",
+                info: "Plastic can take up to 450 years to decompose in landfill. Recycling plastic saves energy and reduces pollution.",
+                tips: [
+                    "Rinse plastic containers before recycling",
+                    "Remove caps and lids (they're often different plastic types)",
+                    "No plastic bags in curbside recycling",
+                    "Check local guidelines for numbered plastics"
+                ]
+            },
+            { 
+                id: 1,
+                name: "Glass", 
+                icon: "./assests/icon2.png",
+                info: "Glass is 100% recyclable and can be recycled endlessly without loss in quality or purity.",
+                tips: [
+                    "Rinse glass containers before recycling",
+                    "Remove metal lids and corks",
+                    "Don't mix colors if your program requires separation",
+                    "No broken glass in recycling bins"
+                ]
+            },
+            { 
+                id: 2,
+                name: "Metal", 
+                icon: "./assests/icon3.png",
+                info: "Recycling aluminum saves 95% of the energy needed to make new aluminum from raw materials.",
+                tips: [
+                    "Rinse metal cans before recycling",
+                    "Remove paper labels if possible",
+                    "Flatten cans to save space",
+                    "Separate aluminum and steel if required"
+                ]
+            },
+            { 
+                id: 3,
+                name: "Cardboard", 
+                icon: "./assests/icon4.png",
+                info: "Cardboard can be recycled 5-7 times before the fibers become too short to be reused.",
+                tips: [
+                    "Flatten cardboard boxes before recycling",
+                    "Remove plastic packing materials",
+                    "Keep cardboard dry and clean",
+                    "No wax-coated cardboard (like milk cartons)"
+                ]
+            },
+            { 
+                id: 4,
+                name: "Paper", 
+                icon: "./assests/icon5.png",
+                info: "Recycling one ton of paper saves 17 trees, 7,000 gallons of water, and 4,000 kilowatts of energy.",
+                tips: [
+                    "Keep paper clean and dry",
+                    "Remove plastic wrapping from magazines",
+                    "Shredded paper may need special handling",
+                    "No paper towels, tissues, or napkins"
+                ]
+            },
+            { 
+                id: 5,
+                name: "Trash", 
+                icon: "./assests/icon6.png",
+                info: "Items that cannot be recycled should be disposed of properly to avoid contaminating recycling streams.",
+                tips: [
+                    "Consider if items can be reused before trashing",
+                    "Hazardous materials need special disposal",
+                    "Reduce waste by choosing reusable alternatives",
+                    "Compost food waste when possible"
+                ]
+            }
+        ];
+
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.querySelector('.upload-btn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const previewContainer = document.getElementById('previewContainer');
+        const waitingSection = document.getElementById('waitingSection');
+        const resultsSection = document.getElementById('resultsSection');
+        const resultCategories = document.getElementById('resultCategories');
+        const detectedType = document.getElementById('detectedType');
+        const confidenceBar = document.getElementById('confidenceBar');
+        const confidencePercentage = document.getElementById('confidencePercentage');
+        const disposalInfo = document.getElementById('disposalInfo');
+        const disposalTips = document.getElementById('disposalTips');
+        
+        let model;
+        let isModelLoading = false;
+        let currentImage = null;
+        let currentPrediction = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            waitingSection.style.display = 'none';
+            resultsSection.style.display = 'none';
+            
+            await loadModel();
+        });
+
+        async function loadModel() {
+            try {
+                isModelLoading = true;
+                console.log('Loading model...');
+                model = await tf.loadGraphModel('model/tfjs_model/model.json');
+                console.log('Model loaded successfully');
+                isModelLoading = false;
+            } catch (error) {
+                console.error('Error loading model:', error);
+                alert('Error loading AI model. Please try again later.');
+                isModelLoading = false;
+            }
+        }
+
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files.length) {
+                handleFile(this.files[0]);
+            }
+        });
+
+        cancelBtn.addEventListener('click', resetUpload);
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            dropArea.classList.add('highlight');
+        }
+        
+        function unhighlight() {
+            dropArea.classList.remove('highlight');
+        }
+        
+        dropArea.addEventListener('drop', function(e) {
+            const dt = e.dataTransfer;
+            const file = dt.files[0];
+            handleFile(file);
+        });
+
+        async function handleFile(file) {
+            if (!file.type.match('image.*')) {
+                alert('Please upload an image file.');
+                return;
+            }
+
+            resetUpload();
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentImage = e.target.result;
+                
+                const imgPreview = document.createElement('img');
+                imgPreview.src = currentImage;
+                imgPreview.style.maxWidth = '300px';
+                imgPreview.style.maxHeight = '300px';
+                imgPreview.style.borderRadius = '10px';
+                imgPreview.style.margin = '0 auto';
+                
+                previewContainer.innerHTML = '';
+                previewContainer.appendChild(imgPreview);
+                
+                cancelBtn.style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+
+            if (!isModelLoading && model) {
+                analyzeImage(file);
+            } else {
+                setTimeout(async () => {
+                    if (!isModelLoading && model) {
+                        analyzeImage(file);
+                    } else {
+                        alert('AI model is still loading. Please try again in a few seconds.');
+                    }
+                }, 1000);
+            }
+        }
+
+        async function analyzeImage(file) {
+    try {
+        waitingSection.style.display = 'block';
+        resultsSection.style.display = 'none';
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        const response = await fetch('https://sortify-api.onrender.com/classify', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const data = await response.json();
+        
+        currentPrediction = data.all_predictions.map((pred, index) => {
+            return {
+                ...pred,
+                info: wasteCategories[index].info,
+                tips: wasteCategories[index].tips
+            };
+        });
+        
+        displayResults(currentPrediction);
+        
+        waitingSection.style.display = 'none';
+        resultsSection.style.display = 'block';
+        
+        resultsSection.scrollIntoView({ behavior: 'smooth' });
+        
+    } catch (error) {
+        console.error('Error analyzing image:', error);
+        alert('Error analyzing image. Please try again.');
+        waitingSection.style.display = 'none';
+    }
+}
+
+        function loadImage(file) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const url = URL.createObjectURL(file);
+                
+                img.onload = () => {
+                    URL.revokeObjectURL(url);
+                    resolve(img);
+                };
+                
+                img.onerror = () => {
+                    URL.revokeObjectURL(url);
+                    reject(new Error('Failed to load image'));
+                };
+                
+                img.src = url;
+            });
+        }
+
+        function preprocessImage(image) {
+            const tensor = tf.browser.fromPixels(image)
+                .resizeNearestNeighbor([224, 224]) 
+                .toFloat();
+            
+            const normalized = tensor.div(255.0);
+            
+            const batched = normalized.expandDims(0);
+            
+            return batched;
+        }
+
+        function processPredictions(predictions) {
+
+            const results = wasteCategories.map((category, index) => {
+                return {
+                    id: category.id,
+                    name: category.name,
+                    confidence: predictions[index],
+                    icon: category.icon,
+                    info: category.info,
+                    tips: category.tips
+                };
+            });
+            
+            results.sort((a, b) => b.confidence - a.confidence);
+            
+            return results;
+        }
+
+        function displayResults(predictions) {
+            resultCategories.innerHTML = '';
+            
+            predictions.forEach((prediction, index) => {
+                const categoryElement = document.createElement('div');
+                categoryElement.className = `category-result ${index === 0 ? 'active' : ''}`;
+                
+                categoryElement.innerHTML = `
+                    <img src="${prediction.icon}" alt="${prediction.name}">
+                    <span>${prediction.name} ${index === 0 ? `<span class="confidence">${Math.round(prediction.confidence * 100)}% confidence</span>` : ''}</span>
+                `;
+                
+                resultCategories.appendChild(categoryElement);
+            });
+            
+            const topPrediction = predictions[0];
+            detectedType.textContent = topPrediction.name;
+            confidenceBar.style.width = `${Math.round(topPrediction.confidence * 100)}%`;
+            confidencePercentage.textContent = `${Math.round(topPrediction.confidence * 100)}%`;
+            disposalInfo.textContent = topPrediction.info;
+            
+            disposalTips.innerHTML = '';
+            topPrediction.tips.forEach(tip => {
+                const li = document.createElement('li');
+                li.textContent = tip;
+                disposalTips.appendChild(li);
+            });
+        }
+
+        function resetUpload() {
+            previewContainer.innerHTML = '';
+            currentImage = null;
+            currentPrediction = null;
+            
+            cancelBtn.style.display = 'none';
+            
+            fileInput.value = '';
+            
+            waitingSection.style.display = 'none';
+            resultsSection.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

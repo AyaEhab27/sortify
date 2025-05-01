@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Sortify AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <img src="./assests/sor.png" alt="Sortify AI Logo">
+                </a>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="learn.html">Learn</a></li>
+                <li><a href="classify.html">Classify</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="contact-page">
+        <section class="contact-content">
+            <h1 style="text-align: center;">Contact Us</h1><br>
+            <p class="intro-text">Have questions about Sortify AI? We'd love to hear from you.</p>
+
+            <div class="divider"></div>
+
+            <section class="contact-form-section">
+                <h2>Get in Touch</h2>
+                
+                <form id="contactForm" class="contact-form">
+                    <div class="form-section">
+                        <!-- <h3>Get in Touch</h3> -->
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Message</h3>
+                        <div class="form-group">
+                            <label for="message">How can we help you?</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="send-message-btn">Send Message</button>
+                </form>
+            </section>
+            <div class="divider"></div>
+
+            <section class="faq-section">
+                <h2 style="text-align: center; color: aliceblue;">Frequently Asked Questions</h2>
+                <p  style="text-align: center;" >Find answers to common questions about Sortify AI.</p><br>
+            
+                <div class="faq-cards">
+                    <div class="faq-card">
+                        <div class="faq-question">
+                            <h3>How accurate is the AI waste classification?</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Our AI model achieves an accuracy rate of over 91.36% for common waste items.</p>
+                        </div>
+                    </div><br>
+            
+                    <div class="faq-card">
+                        <div class="faq-question">
+                            <h3>Is the app free to use?</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, the basic waste classification feature is free for all users.</p>
+                        </div>
+                    </div><br>
+            
+                    <div class="faq-card">
+                        <div class="faq-question">
+                            <h3>How can I contribute to improving the AI?</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>You can help by providing feedback on classification results.</p>
+                        </div>
+                    </div><br>
+            
+                    <div class="faq-card">
+                        <div class="faq-question">
+                            <h3>Does the app work offline?</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>The core classification feature requires an internet connection.</p>
+                        </div>
+                    </div><br>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="./assests/sor.png" alt="Sortify AI Logo" class="footer-logo">
+                <p>Sortify AI helps you sort waste correctly using artificial intelligence. Our mission is to reduce landfill waste and increase recycling efficiency.</p>
+            </div>
+            
+            <div class="footer-links-group">
+                <div class="footer-links">
+                    <h3 style="color: white;">Navigation</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="learn.html">Learn</a></li>
+                        <li><a href="classify.html">Classify</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 style="color: white;">Legal</h3>
+                    <ul>
+                        <li><a href="">Privacy Policy</a></li>
+                        <li><a href="">Terms of Service</a></li>
+                        <li><a href="">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sortify AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value
+            };
+            
+            console.log('Form submitted:', formData);
+            
+            alert('Thank you for your message! We will contact you soon.');
+            
+            this.reset();
+        });
+    </script>
+</body>
+</html>
