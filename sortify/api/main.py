@@ -19,7 +19,7 @@ app.add_middleware(
 )
 
 if not os.path.exists('model'):
-    model_url = "https://drive.google.com/file/d/1P-JY8OTsuBnc4JCg_eLS2TqTtz8LTj3i/view?usp=sharing"  
+    model_url = "https://drive.google.com/uc?export=download&id=1P-JY8OTsuBnc4JCg_eLS2TqTtz8LTj3i"  
     output = "model.zip"
     gdown.download(model_url, output, quiet=False)
     
