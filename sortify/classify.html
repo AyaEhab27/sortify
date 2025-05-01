@@ -289,7 +289,7 @@
             try {
                 isModelLoading = true;
                 console.log('Loading model...');
-                model = await tf.loadGraphModel('model/tfjs_model/model.json');
+                model = await tf.loadGraphModel('./model/best_model_full (1).h5');
                 console.log('Model loaded successfully');
                 isModelLoading = false;
             } catch (error) {
@@ -387,7 +387,7 @@
         const formData = new FormData();
         formData.append('file', file);
         
-        const response = await fetch('https://sortify-api.onrender.com/classify', {
+        const response = await fetch('https://sortify-2.onrender.com', {
             method: 'POST',
             body: formData
         });
