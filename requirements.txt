@@ -5,3 +5,4 @@ pillow>=8.3.1
 python-multipart>=0.0.5
 numpy>=1.21.0
 gdown>=4.4.0
+requests>=2.25.0
