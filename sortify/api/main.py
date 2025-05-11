@@ -45,7 +45,7 @@ def download_model():
             
             
             with zipfile.ZipFile(MODEL_ZIP, 'r') as zip_ref:
-                zip_ref.extractall('.')
+                zip_ref.extractall('./model')
             
             
             os.remove(MODEL_ZIP)
