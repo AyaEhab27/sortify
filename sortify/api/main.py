@@ -31,26 +31,25 @@ ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 def download_model():
     if not MODEL_PATH.exists():
         MODEL_DIR.mkdir(exist_ok=True)
-
         print("Downloading model...")
         try:
-            gdown.download(url="https://drive.google.com/uc?id=1P-JY8OTsuBnc4JCg_eLS2TqTtz8LTj3i", output=str(MODEL_PATH), quiet=False,use_cookies=True)
-            print("Model downloaded successfully")
+
+            subprocess.run([
+                "wget",
+                "--no-check-certificate",
+                MODEL_URL,
+                "-O", str(MODEL_PATH) 
+            ], check=True)
+            print(f"Model downloaded successfully! Size: {os.path.getsize(MODEL_PATH)} bytes")
         except Exception as e:
-            print(f"Error downloading model: {e}")
+            print(f"Failed to download model: {e}")
             raise
 
 def load_model():
-    if not MODEL_PATH.exists():
-        download_model()
-    
     try:
+        download_model()  
         model = tf.keras.models.load_model(MODEL_PATH)
-        model.compile(
-            optimizer='adam',
-            loss='categorical_crossentropy',
-            metrics=['accuracy']
-        )
+        print("Model loaded successfully!")
         return model
     except Exception as e:
         print(f"Error loading model: {e}")
