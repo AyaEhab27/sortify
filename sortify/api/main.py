@@ -1,60 +1,54 @@
+import os
+import subprocess  
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 import tensorflow as tf
 from PIL import Image
 import io
-import os
-import requests
-import tempfile
 from pathlib import Path
-import gdown
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+tf.get_logger().setLevel('ERROR')
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-MODEL_URL = "https://drive.google.com/uc?export=download&id=1P-JY8OTsuBnc4JCg_eLS2TqTtz8LTj3i"
+MODEL_URL = "https://drive.google.com/uc?id=1P-JY8OTsuBnc4JCg_eLS2TqTtz8LTj3i"
 MODEL_DIR = Path("model")
 MODEL_PATH = MODEL_DIR / "best_model_full (1).h5"
-MAX_FILE_SIZE = 88 * 1024 * 1024  
-ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
-
 
 def download_model():
     if not MODEL_PATH.exists():
         MODEL_DIR.mkdir(exist_ok=True)
         print("Downloading model...")
         try:
-
             subprocess.run([
                 "wget",
                 "--no-check-certificate",
                 MODEL_URL,
-                "-O", str(MODEL_PATH) 
+                "-O", str(MODEL_PATH)
             ], check=True)
-            print(f"Model downloaded successfully! Size: {os.path.getsize(MODEL_PATH)} bytes")
+            print(f"Model downloaded! Size: {os.path.getsize(MODEL_PATH)} bytes")
         except Exception as e:
             print(f"Failed to download model: {e}")
             raise
 
 def load_model():
     try:
-        download_model()  
+        download_model()
         model = tf.keras.models.load_model(MODEL_PATH)
         print("Model loaded successfully!")
         return model
     except Exception as e:
         print(f"Error loading model: {e}")
         raise
-
 
 model = load_model()
 
