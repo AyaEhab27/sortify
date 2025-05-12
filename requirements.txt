@@ -4,3 +4,4 @@ tensorflow>=2.6.0
 gdown>=4.4.0
 numpy>=1.19.5
 pillow>=9.0.0
+python-multipart>=0.0.6
