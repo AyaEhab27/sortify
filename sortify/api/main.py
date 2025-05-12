@@ -20,29 +20,31 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MODEL_URL = "https://drive.google.com/uc?id=1P-JY8OTsuBnc4JCg_eLS2TqTtz8LTj3i"
+# MODEL_URL = "https://drive.google.com/uc?id=1P-JY8OTsuBnc4JCg_eLS2TqTtz8LTj3i"
 MODEL_DIR = Path("model")
 MODEL_PATH = MODEL_DIR / "best_model_full (1).h5"
 
-def download_model():
-    if not MODEL_PATH.exists():
-        MODEL_DIR.mkdir(exist_ok=True)
-        print("Downloading model...")
-        try:
-            subprocess.run([
-                "wget",
-                "--no-check-certificate",
-                MODEL_URL,
-                "-O", str(MODEL_PATH)
-            ], check=True)
-            print(f"Model downloaded! Size: {os.path.getsize(MODEL_PATH)} bytes")
-        except Exception as e:
-            print(f"Failed to download model: {e}")
-            raise
+# def download_model():
+#     if not MODEL_PATH.exists():
+#         MODEL_DIR.mkdir(exist_ok=True)
+#         print("Downloading model...")
+#         try:
+#             subprocess.run([
+#                 "wget",
+#                 "--no-check-certificate",
+#                 MODEL_URL,
+#                 "-O", str(MODEL_PATH)
+#             ], check=True)
+#             print(f"Model downloaded! Size: {os.path.getsize(MODEL_PATH)} bytes")
+#         except Exception as e:
+#             print(f"Failed to download model: {e}")
+#             raise
 
 def load_model():
     try:
-        download_model()
+        if not MODEL_PATH.exists():
+            raise Exception("Model file not found! Please upload it manually to /model/ directory.")
+            
         model = tf.keras.models.load_model(MODEL_PATH)
         print("Model loaded successfully!")
         return model
@@ -57,35 +59,43 @@ waste_categories = [
     "Plastic", "Glass", "Metal", "Cardboard", "Paper", "Trash"
 ]
 
-def preprocess_image(image):
-    """Preprocess image for model prediction"""
-    try:
+# def preprocess_image(image):
+#     """Preprocess image for model prediction"""
+#     try:
 
-        if image.mode != 'RGB':
-            image = image.convert('RGB')
+#         if image.mode != 'RGB':
+#             image = image.convert('RGB')
         
 
-        image = image.resize((224, 224))
-        image_array = np.array(image) / 255.0
-        image_array = np.expand_dims(image_array, axis=0)
-        return image_array
-    except Exception as e:
-        raise ValueError(f"Image processing error: {e}")
+#         image = image.resize((224, 224))
+#         image_array = np.array(image) / 255.0
+#         image_array = np.expand_dims(image_array, axis=0)
+#         return image_array
+#     except Exception as e:
+#         raise ValueError(f"Image processing error: {e}")
 
 @app.post("/classify")
 async def classify_waste(file: UploadFile = File(...)):
 
-    if file.size > MAX_FILE_SIZE:
-        raise HTTPException(status_code=413, detail="File too large (max 5MB)")
-    
+    allowed_extensions = {'jpg', 'jpeg', 'png'}
     file_ext = file.filename.split('.')[-1].lower()
-    if file_ext not in ALLOWED_EXTENSIONS:
+    if file_ext not in allowed_extensions:
         raise HTTPException(status_code=400, detail="Invalid file type. Only JPG/JPEG/PNG allowed.")
     
     try:
         contents = await file.read()
         image = Image.open(io.BytesIO(contents))
-        
+
+        image.verify()
+        image = Image.open(io.BytesIO(contents))
+
+        image = image.resize((224, 224))
+        image_array = np.array(image) / 255.0
+        image_array = np.expand_dims(image_array, axis=0)
+
+        predictions = model.predict(image_array)
+        predicted_class = np.argmax(predictions[0])
+        confidence = float(predictions[0][predicted_class])
 
         try:
             image.verify()  
@@ -102,23 +112,11 @@ async def classify_waste(file: UploadFile = File(...)):
         confidence = float(predictions[0][predicted_class])
         
 
-        results = []
-        for i, category in enumerate(waste_categories):
-            results.append({
-                "id": i,
-                "name": category,
-                "confidence": float(predictions[0][i]),
-                "icon": f"/assests/icon{i+1}.png"
-            })
-        
-        results.sort(key=lambda x: x["confidence"], reverse=True)
+        waste_categories = ["Plastic", "Glass", "Metal", "Cardboard", "Paper", "Trash"]
         
         return {
-            "top_prediction": {
-                "name": waste_categories[predicted_class],
-                "confidence": confidence
-            },
-            "all_predictions": results
+            "prediction": waste_categories[predicted_class],
+            "confidence": confidence
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
