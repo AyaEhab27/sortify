@@ -23,7 +23,7 @@ app.add_middleware(
 
 MODEL_URL = "https://drive.google.com/uc?export=download&id=1P-JY8OTsuBnc4JCg_eLS2TqTtz8LTj3i"
 MODEL_DIR = Path("model")
-MODEL_PATH = MODEL_DIR / "best_model.h5"
+MODEL_PATH = MODEL_DIR / "best_model_full (1).h5"
 MAX_FILE_SIZE = 88 * 1024 * 1024  
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 
