@@ -27,14 +27,14 @@ MODEL_PATH = MODEL_DIR / "best_model_full (1).h5"
 MAX_FILE_SIZE = 88 * 1024 * 1024  
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 
-# Load or download model
+
 def download_model():
     if not MODEL_PATH.exists():
         MODEL_DIR.mkdir(exist_ok=True)
 
         print("Downloading model...")
         try:
-            gdown.download(id="1P-JY8OTsuBnc4JCg_eLS2TqTtz8LTj3i", output=str(MODEL_PATH), quiet=False)
+            gdown.download(url="https://drive.google.com/uc?id=1P-JY8OTsuBnc4JCg_eLS2TqTtz8LTj3i", output=str(MODEL_PATH), quiet=False,use_cookies=True)
             print("Model downloaded successfully")
         except Exception as e:
             print(f"Error downloading model: {e}")
