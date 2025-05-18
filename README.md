@@ -25,3 +25,11 @@
    ```bash
    cd api && pip install -r requirements.txt
    python main.py
+2. **Launch the Frontend:**
+
+   Open index.html in your browser.
+
+  ## 🌍 Environmental Impact
+    Reduces waste sorting errors, improving recycling efficiency.
+    
+    Provides practical tips for proper waste disposal.
