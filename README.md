@@ -1,5 +1,5 @@
-# Sortify AI 🌱
-### Smart Waste Classification Using Deep Learning
+# Sortify AI 🗑️♻️
+### Smart Waste Classification Using Deep Learning 🧠🤖
 
 <div align="center">
   <img src="assests/demo.gif" alt="Demo" width="600">
